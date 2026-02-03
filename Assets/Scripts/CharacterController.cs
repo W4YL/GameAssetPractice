@@ -13,6 +13,10 @@ public class CharacterController : MonoBehaviour
     private float facing = 1;
     private bool isGrounded;
 
+    public Transform groundCheckPos;
+    float groundCheckLength = 0.01f;
+    public LayerMask groundCheckLayerMask;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,20 +32,22 @@ public class CharacterController : MonoBehaviour
 
         //Facing direction
         if (inputX > 0)
-        {
             facing = 1;
-        }
         else if (inputX < 0)
-        {
             facing = -1;
-        }
 
         if (facing == 1)
             spriteRenderer.flipX = false;
         else if (facing < -0.01f)
             spriteRenderer.flipX = true;
 
-        if (Input.GetButtonDown("Jump"))
+        RaycastHit2D hit = Physics2D.Raycast(groundCheckPos.position, Vector2.down, groundCheckLength, groundCheckLayerMask);
+        if(hit.collider != null)
+            isGrounded = true;
+        else
+        isGrounded = false;
+
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
@@ -49,6 +55,13 @@ public class CharacterController : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
         //}
+
+        if (animator)
+        {
+            animator.SetFloat("moveX", Mathf.Abs(rigidBody.linearVelocityX));
+            animator.SetBool("isJumping", !isGrounded);
+            animator.SetBool("isFalling", rigidBody.linearVelocityY < 0);
+        }
     }
 
     private void FixedUpdate()
