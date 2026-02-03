@@ -14,15 +14,15 @@ public class CharacterController : MonoBehaviour
     private bool isGrounded;
 
     public Transform groundCheckPos;
-    float groundCheckLength = 0.01f;
+    float groundCheckLength = 0.1f;
     public LayerMask groundCheckLayerMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rigidBody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        //rigidBody = GetComponent<Rigidbody2D>();
+        //animator = GetComponent<Animator>();
+        //spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
