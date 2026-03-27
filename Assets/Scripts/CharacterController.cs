@@ -12,10 +12,15 @@ public class CharacterController : MonoBehaviour
     private float inputX = 0;
     private float facing = 1;
     private bool isGrounded;
+    private bool canPlayLandParticles = true;
 
     public Transform groundCheckPos;
     float groundCheckLength = 0.1f;
     public LayerMask groundCheckLayerMask;
+
+    public ParticleSystem jumpParticles;
+    public ParticleSystem walkParticles;
+    public ParticleSystem landParticles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,7 +53,15 @@ public class CharacterController : MonoBehaviour
         isGrounded = false;
 
         if (Input.GetButtonDown("Jump") && isGrounded)
+        {
             rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+
+        if (isGrounded && canPlayLandParticles)
+        {
+            landParticles.Play();
+            canPlayLandParticles = false;
+        }
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
@@ -65,5 +78,16 @@ public class CharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         rigidBody.linearVelocityX = inputX * moveSpeed;
+    }
+
+    public void JumpParticlesPlay()
+    {
+        jumpParticles.Play();
+        canPlayLandParticles = true;
+    }
+
+    public void WalkParticlesPlay()
+    {
+        walkParticles.Play();
     }
 }
