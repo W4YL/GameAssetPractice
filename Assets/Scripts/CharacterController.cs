@@ -48,9 +48,7 @@ public class CharacterController : MonoBehaviour
         isGrounded = false;
 
         if (Input.GetButtonDown("Jump") && isGrounded)
-        {
             rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
